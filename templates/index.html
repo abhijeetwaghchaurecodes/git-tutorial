@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>TankMetrics</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+  
+    <!--fonts by Google-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Yeseva+One&display=swap" rel="stylesheet">
+
+    <!--fonts sub-page-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@600&family=Yeseva+One&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header class="header">
+        <div class="header-left">
+            <a href="http://127.0.0.1:5500/index.html">
+                <h1 class="logo">TankMetrics</h1>
+            </a>
+            
+        </div>
+        <div class="header-right">
+            <p class="intro">Welcome to TankMetrics, Simulation system for innovative model-based solutions</p>
+        </div>
+    </header>
+    <div class="for-image">
+        <div class="background">
+
+            <div class="box">
+                
+                    <div class="form">
+                        <form id="calculation-form" method="POST">
+                            <label for="population">Population:</label>
+                            <input type="number" name="population" required><br><br>
+                            
+                            <label for="demand">Per Capita Demand:</label>
+                            <input type="number" name="demand" required><br><br>
+                            
+                            <label for="detention_period">Detention Period (in hrs):</label>
+                            <input type="number" name="detention_period" required><br><br>
+                            
+                            <label for="flow_velocity">Flow Velocity (m/min):</label>
+                            <input type="number" name="flow_velocity" step="0.01" required><br><br>
+                            
+                            <label for="sludge_depth" style="display: none;">Do you want to enter sludge-depth and free-board?</label>
+                            <select name="sludge_depth" id="sludge_depth">
+                                <option value="0">No</option>
+                                <option value="1">Yes</option>
+                            </select><br><br>
+                            
+                            <div id="sludge_depth_fields" style="display: none;">
+                                <label for="sludge_depth_value">Sludge Depth:</label>
+                                <input type="number" name="sludge_depth_value" step="0.01"><br><br>
+                                
+                                <label for="free_board">Free Board:</label>
+                                <input type="number" name="free_board" step="0.01"><br><br>
+                            </div>
+                            
+                            <input type="submit" value="Calculate">
+                        </form>
+                    </div>
+                        
+                    
+                    
+                
+            </div>
+            <div class="box">
+                <div class="box-contents">
+                    <div id="result-container"></div>
+                    <div class="theory">
+                        Sedimentation Tank:
+
+                        -also known as clarifiers, are used in water treatment to remove suspended solids and particles from water.
+                        The tank allows the water to flow slowly, allowing heavier particles and solids to settle at the bottom.
+                        Coagulation Tank:
+
+                            Coagulation is a chemical process used to destabilize suspended particles and colloids in water.
+                            Coagulation tanks are designed to promote the aggregation of fine particles into larger floc particles, which can be more easily removed.
+                    </div>
+                </div>
+                
+            </div>
+            
+            
+        </div>
+    </div>
+    
+    <div class="next-button">
+        
+        <button type="button" class="btn btn-success" onclick="openNextPage()">Next</button>
+    </div>
+    
+    <footer class="footer">
+        <div class="footer-left">
+            <p class="footer-text">Support Us</p>
+            <p class="footer-text">Contact Us:+1 (555) 123-4567</p>
+        </div>
+        <div class="footer-right">
+            <a href="https://www.instagram.com/"><img src="{{ url_for('static', filename='instagram.png') }}" alt="Instagram"></a>
+            <a href="https://www.twitter.com"><img src="{{ url_for('static', filename='twitter.png') }}" alt="Twitter"></a>
+            <a href="https://www.facebook.com"><img src="{{ url_for('static', filename='facebook.png') }}" alt="Facebook"></a>
+            <a href="https://www.linkedin.com"><img src="{{ url_for('static', filename='linkedin.png') }}" alt="LinkedIn"></a>
+            <a href="https://www.whatsapp.com"><img src="{{ url_for('static', filename='whatsapp.png') }}" alt="WhatsApp"></a>
+            <a href="https://www.youtube.com"><img src="{{ url_for('static', filename='YouTube.png') }}" alt="YouTube"></a>
+        </div>
+    </footer>
+    
+
+    
+
+    <script>
+        $(document).ready(function() {
+            $('#calculation-form').submit(function(event) {
+                event.preventDefault(); // Prevent form submission
+                
+                var form = $(this);
+                var url = form.attr('action');
+                var formData = form.serialize();
+
+                $.ajax({
+                    type: 'POST',
+                    url: url,
+                    data: formData,
+                    success: function(response) {
+                        $('#result-container').html(response);
+                    },
+                    error: function(error) {
+                        console.log(error);
+                    }
+                });
+            });
+
+            $('#sludge_depth').change(function() {
+                var selectedValue = $(this).val();
+                var sludgeDepthFields = $('#sludge_depth_fields');
+                if (selectedValue === '1') {
+                    sludgeDepthFields.show();
+                } else {
+                    sludgeDepthFields.hide();
+                }
+            });
+        });
+
+        function openNextPage() {
+            window.location.href = "http://127.0.0.1:5000/";
+        }
+
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js" integrity="sha384-fbbOQedDUMZZ5KreZpsbe1LCZPVmfTnH7ois6mU1QK+m14rQ1l2bGBq41eYeM/fS" crossorigin="anonymous"></script>
+    
+</body>
+</html>
