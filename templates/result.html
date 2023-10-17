@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>WTP - Results</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <h3 style="padding-top: 25px;">Water Tank Calculation - Results</h3>
+    <div class="result-container">
+        <p>The volume of tank: {{ vol }} m^3</p>
+        <p>The length of tank: {{ tank_length }} m</p>
+        <p>The width of tank: {{ tank_width }} m</p>
+        <p>The depth of tank: {{ tank_depth }} m</p>
+        <p>The overall depth of tank: {{ overall_depth }} m</p>
+    </div>
+</body>
+</html>
