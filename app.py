@@ -1,9 +1,10 @@
+# Import necessary modules
 from flask import Flask, render_template, request
 
-app = Flask(__name__)
+# Create the Flask application
+app = Flask(__name)
 
-
-
+# Define a route for the home page
 @app.route('/', methods=['GET', 'POST'])
 def home():
     if request.method == 'POST':
@@ -29,7 +30,7 @@ def home():
         
         tank_width = tank_length / 6
         
-        tank_depth = (vol * 2 )/ (tank_length * tank_width)
+        tank_depth = (vol * 2) / (tank_length * tank_width)
         overall_depth = free_board + sludge_depth + tank_depth
         
         return render_template('result.html', vol=vol, tank_length=tank_length, tank_width=tank_width, tank_depth=tank_depth, overall_depth=overall_depth)
@@ -37,6 +38,6 @@ def home():
     return render_template('index.html')
 
 if __name__ == '__main__':
-    #app.run(debug=True)
     app.run(port=8000)
 
+#added comments and simplified logic to understand and shared code, please do the same
